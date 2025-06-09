@@ -1,0 +1,17 @@
+{
+	"name": "AzureSqlDatabaselinked",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "ds-training.database.windows.net",
+			"database": "demo-training-db",
+			"encrypt": "mandatory",
+			"trustServerCertificate": false,
+			"authenticationType": "SQL",
+			"userName": "sadev",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDUyNEVBQTFGLTZBQzUtNDM4OC1CNDg1LUJFMzMxMjU0RjZGRF9jMDU0MDMyNy01OTBmLTQ5MjctYTVjMi1jNjlhMzY5N2E0YjIiDQp9"
+		}
+	}
+}

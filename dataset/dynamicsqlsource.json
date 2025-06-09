@@ -1,0 +1,24 @@
+{
+	"name": "dynamicsqlsource",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sql_source",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"tablename": {
+				"type": "string"
+			},
+			"watermarkcolumn": {
+				"type": "string"
+			},
+			"lastvalue": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

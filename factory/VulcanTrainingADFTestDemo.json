@@ -1,0 +1,9 @@
+{
+	"name": "VulcanTrainingADFTestDemo",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "ec944064-ac1c-4e99-b926-916e9ea0d644",
+		"tenantId": "3352c4d0-33e5-4899-9d84-1ca608f6b031"
+	}
+}

@@ -1,0 +1,69 @@
+{
+	"name": "EmployeeDataFlow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "EmployeeInputDS",
+						"type": "DatasetReference"
+					},
+					"name": "EmployeeSource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "EmployeeTable",
+						"type": "DatasetReference"
+					},
+					"name": "EmployeeSink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "FilterAge"
+				},
+				{
+					"name": "AddStatus"
+				},
+				{
+					"name": "UpperName"
+				},
+				{
+					"name": "ParseDate"
+				},
+				{
+					"name": "CalculateTenure"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          name as string,",
+				"          age as integer,",
+				"          salary as integer,",
+				"          join_date as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> EmployeeSource",
+				"EmployeeSource filter(age > 30) ~> FilterAge",
+				"FilterAge derive(status = iif(salary > 50000, 'High', 'Low')) ~> AddStatus",
+				"AddStatus derive(name = upper(name)) ~> UpperName",
+				"UpperName derive(join_date = toDate(join_date, 'yyyy-MM-dd')) ~> ParseDate",
+				"ParseDate derive(tenure_years = round((currentDate()-join_date) / 365.0)) ~> CalculateTenure",
+				"CalculateTenure sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> EmployeeSink"
+			]
+		}
+	}
+}

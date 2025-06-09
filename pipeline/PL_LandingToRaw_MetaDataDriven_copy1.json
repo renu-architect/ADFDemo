@@ -1,0 +1,294 @@
+{
+	"name": "PL_LandingToRaw_MetaDataDriven_copy1",
+	"properties": {
+		"activities": [
+			{
+				"name": "GetListofTables",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select * from metadata_pipeline_config where source_type='sql' and is_active=1 ",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "GetListofTables",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetListofTables').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "CheckLoadType",
+							"type": "IfCondition",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@equals(toLower(item().load_type), 'full')\n",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "incrload",
+										"type": "Copy",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"source": {
+												"type": "AzureSqlSource",
+												"sqlReaderQuery": {
+													"value": "SELECT * FROM @{item().source_path_or_table}\nWHERE @{item().watermark_column} > '@{item().last_value}'\n",
+													"type": "Expression"
+												},
+												"queryTimeout": "02:00:00",
+												"partitionOption": "None"
+											},
+											"sink": {
+												"type": "ParquetSink",
+												"storeSettings": {
+													"type": "AzureBlobFSWriteSettings"
+												},
+												"formatSettings": {
+													"type": "ParquetWriteSettings"
+												}
+											},
+											"enableStaging": false,
+											"translator": {
+												"type": "TabularTranslator",
+												"typeConversion": true,
+												"typeConversionSettings": {
+													"allowDataTruncation": true,
+													"treatBooleanAsNumber": false
+												}
+											}
+										},
+										"inputs": [
+											{
+												"referenceName": "dynamicsqlsource",
+												"type": "DatasetReference",
+												"parameters": {
+													"tablename": {
+														"value": "@item().source_path_or_table",
+														"type": "Expression"
+													},
+													"watermarkcolumn": {
+														"value": "@item().watermark_column",
+														"type": "Expression"
+													},
+													"lastvalue": {
+														"value": "@item().last_Value",
+														"type": "Expression"
+													}
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "Parquet2",
+												"type": "DatasetReference",
+												"parameters": {
+													"tablename": {
+														"value": "@item().source_path_or_table",
+														"type": "Expression"
+													}
+												}
+											}
+										]
+									},
+									{
+										"name": "IncrLoadLogging",
+										"type": "Script",
+										"dependsOn": [
+											{
+												"activity": "incrload",
+												"dependencyConditions": [
+													"Completed"
+												]
+											}
+										],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"linkedServiceName": {
+											"referenceName": "AzureSqlDatabaselinked",
+											"type": "LinkedServiceReference"
+										},
+										"typeProperties": {
+											"scripts": [
+												{
+													"type": "Query",
+													"text": {
+														"value": "@concat(\n  'INSERT INTO load_audit_log (table_name, pipeline_name, status, rows_copied, log_time) VALUES (''',\n  item().source_path_or_table, ''', ''',\n  pipeline().Pipeline, ''', ''',\n  activity('incrload').status, ''', ',\n  if(equals(activity('incrload').status, 'Succeeded'), string(activity('incrload').output.rowsCopied), '0'),\n  ', GETDATE())'\n)\n",
+														"type": "Expression"
+													}
+												}
+											],
+											"scriptBlockExecutionTimeout": "02:00:00"
+										}
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "fullload",
+										"type": "Copy",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"source": {
+												"type": "AzureSqlSource",
+												"sqlReaderQuery": {
+													"value": "SELECT * FROM @{item().source_path_or_table}",
+													"type": "Expression"
+												},
+												"queryTimeout": "02:00:00",
+												"partitionOption": "None"
+											},
+											"sink": {
+												"type": "ParquetSink",
+												"storeSettings": {
+													"type": "AzureBlobFSWriteSettings"
+												},
+												"formatSettings": {
+													"type": "ParquetWriteSettings"
+												}
+											},
+											"enableStaging": false,
+											"translator": {
+												"type": "TabularTranslator",
+												"typeConversion": true,
+												"typeConversionSettings": {
+													"allowDataTruncation": true,
+													"treatBooleanAsNumber": false
+												}
+											}
+										},
+										"inputs": [
+											{
+												"referenceName": "dynamicsqlsource",
+												"type": "DatasetReference",
+												"parameters": {
+													"tablename": {
+														"value": "@item().source_path_or_table",
+														"type": "Expression"
+													},
+													"watermarkcolumn": {
+														"value": "@item().watermark_column",
+														"type": "Expression"
+													},
+													"lastvalue": {
+														"value": "@item().last_Value",
+														"type": "Expression"
+													}
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "Parquet2",
+												"type": "DatasetReference",
+												"parameters": {
+													"tablename": {
+														"value": "@item().source_path_or_table",
+														"type": "Expression"
+													}
+												}
+											}
+										]
+									},
+									{
+										"name": "FullLoadLogging",
+										"type": "Script",
+										"dependsOn": [
+											{
+												"activity": "fullload",
+												"dependencyConditions": [
+													"Completed"
+												]
+											}
+										],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"linkedServiceName": {
+											"referenceName": "AzureSqlDatabaselinked",
+											"type": "LinkedServiceReference"
+										},
+										"typeProperties": {
+											"scripts": [
+												{
+													"type": "Query",
+													"text": {
+														"value": "@concat(\n  'INSERT INTO load_audit_log (table_name, pipeline_name, status, rows_copied, log_time) VALUES (''',\n  item().source_path_or_table, ''', ''',\n  pipeline().Pipeline, ''', ''',\n  activity('fullload').status, ''', ',\n  if(equals(activity('fullload').status, 'Succeeded'), string(activity('fullload').output.rowsCopied), '0'),\n  ', GETDATE())'\n)\n",
+														"type": "Expression"
+													}
+												}
+											],
+											"scriptBlockExecutionTimeout": "02:00:00"
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2025-06-05T09:36:47Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
