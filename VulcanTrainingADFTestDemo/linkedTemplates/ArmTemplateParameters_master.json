@@ -1,0 +1,90 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "VulcanTrainingADFTestDemo"
+		},
+		"Anu_demolinkedService_accountKey": {
+			"value": ""
+		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorage2_accountKey": {
+			"value": ""
+		},
+		"AzureSqlDatabaselinked_password": {
+			"value": ""
+		},
+		"LS_ADLS_Sink_accountKey": {
+			"value": ""
+		},
+		"LS_Generic_Source_accountKey": {
+			"value": ""
+		},
+		"LS_SQL_DB_password": {
+			"value": ""
+		},
+		"ls_metadata_accountKey": {
+			"value": ""
+		},
+		"ls_sql_source_password": {
+			"value": ""
+		},
+		"Anu_demolinkedService_properties_typeProperties_url": {
+			"value": "https://capstonestorage001.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://capstonestorage001.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage2_properties_typeProperties_url": {
+			"value": "https://capstonestorage001.dfs.core.windows.net/"
+		},
+		"AzureSqlDatabaselinked_properties_typeProperties_server": {
+			"value": "ds-training.database.windows.net"
+		},
+		"AzureSqlDatabaselinked_properties_typeProperties_database": {
+			"value": "demo-training-db"
+		},
+		"AzureSqlDatabaselinked_properties_typeProperties_userName": {
+			"value": "sadev"
+		},
+		"LS_ADLS_Sink_properties_typeProperties_url": {
+			"value": "https://capstonestorage001.dfs.core.windows.net/"
+		},
+		"LS_Generic_Source_properties_typeProperties_url": {
+			"value": "https://capstonestorage001.dfs.core.windows.net/"
+		},
+		"LS_SQL_DB_properties_typeProperties_server": {
+			"value": "ds-training.database.windows.net"
+		},
+		"LS_SQL_DB_properties_typeProperties_database": {
+			"value": "demo-training-db"
+		},
+		"LS_SQL_DB_properties_typeProperties_userName": {
+			"value": "sadev"
+		},
+		"ls_metadata_properties_typeProperties_url": {
+			"value": "https://capstonestorage001.dfs.core.windows.net/"
+		},
+		"ls_sql_source_properties_typeProperties_server": {
+			"value": "ds-training.database.windows.net"
+		},
+		"ls_sql_source_properties_typeProperties_database": {
+			"value": "demo-training-db"
+		},
+		"ls_sql_source_properties_typeProperties_userName": {
+			"value": "sadev"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

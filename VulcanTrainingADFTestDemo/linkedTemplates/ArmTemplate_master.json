@@ -1,0 +1,277 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "VulcanTrainingADFTestDemo"
+		},
+		"Anu_demolinkedService_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'Anu_demolinkedService'"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+		},
+		"AzureDataLakeStorage2_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage2'"
+		},
+		"AzureSqlDatabaselinked_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'AzureSqlDatabaselinked'"
+		},
+		"LS_ADLS_Sink_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADLS_Sink'"
+		},
+		"LS_Generic_Source_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_Generic_Source'"
+		},
+		"LS_SQL_DB_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS_SQL_DB'"
+		},
+		"ls_metadata_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_metadata'"
+		},
+		"ls_sql_source_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_sql_source'"
+		},
+		"Anu_demolinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://capstonestorage001.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://capstonestorage001.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://capstonestorage001.dfs.core.windows.net/"
+		},
+		"AzureSqlDatabaselinked_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "ds-training.database.windows.net"
+		},
+		"AzureSqlDatabaselinked_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "demo-training-db"
+		},
+		"AzureSqlDatabaselinked_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sadev"
+		},
+		"LS_ADLS_Sink_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://capstonestorage001.dfs.core.windows.net/"
+		},
+		"LS_Generic_Source_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://capstonestorage001.dfs.core.windows.net/"
+		},
+		"LS_SQL_DB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "ds-training.database.windows.net"
+		},
+		"LS_SQL_DB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "demo-training-db"
+		},
+		"LS_SQL_DB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sadev"
+		},
+		"ls_metadata_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://capstonestorage001.dfs.core.windows.net/"
+		},
+		"ls_sql_source_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "ds-training.database.windows.net"
+		},
+		"ls_sql_source_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "demo-training-db"
+		},
+		"ls_sql_source_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sadev"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "VulcanTrainingADFTestDemo_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"Anu_demolinkedService_accountKey": {
+						"value": "[parameters('Anu_demolinkedService_accountKey')]"
+					},
+					"AzureBlobStorage1_connectionString": {
+						"value": "[parameters('AzureBlobStorage1_connectionString')]"
+					},
+					"AzureDataLakeStorage1_accountKey": {
+						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+					},
+					"AzureDataLakeStorage2_accountKey": {
+						"value": "[parameters('AzureDataLakeStorage2_accountKey')]"
+					},
+					"AzureSqlDatabaselinked_password": {
+						"value": "[parameters('AzureSqlDatabaselinked_password')]"
+					},
+					"LS_ADLS_Sink_accountKey": {
+						"value": "[parameters('LS_ADLS_Sink_accountKey')]"
+					},
+					"LS_Generic_Source_accountKey": {
+						"value": "[parameters('LS_Generic_Source_accountKey')]"
+					},
+					"LS_SQL_DB_password": {
+						"value": "[parameters('LS_SQL_DB_password')]"
+					},
+					"ls_metadata_accountKey": {
+						"value": "[parameters('ls_metadata_accountKey')]"
+					},
+					"ls_sql_source_password": {
+						"value": "[parameters('ls_sql_source_password')]"
+					},
+					"Anu_demolinkedService_properties_typeProperties_url": {
+						"value": "[parameters('Anu_demolinkedService_properties_typeProperties_url')]"
+					},
+					"AzureDataLakeStorage1_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]"
+					},
+					"AzureDataLakeStorage2_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLakeStorage2_properties_typeProperties_url')]"
+					},
+					"AzureSqlDatabaselinked_properties_typeProperties_server": {
+						"value": "[parameters('AzureSqlDatabaselinked_properties_typeProperties_server')]"
+					},
+					"AzureSqlDatabaselinked_properties_typeProperties_database": {
+						"value": "[parameters('AzureSqlDatabaselinked_properties_typeProperties_database')]"
+					},
+					"AzureSqlDatabaselinked_properties_typeProperties_userName": {
+						"value": "[parameters('AzureSqlDatabaselinked_properties_typeProperties_userName')]"
+					},
+					"LS_ADLS_Sink_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLS_Sink_properties_typeProperties_url')]"
+					},
+					"LS_Generic_Source_properties_typeProperties_url": {
+						"value": "[parameters('LS_Generic_Source_properties_typeProperties_url')]"
+					},
+					"LS_SQL_DB_properties_typeProperties_server": {
+						"value": "[parameters('LS_SQL_DB_properties_typeProperties_server')]"
+					},
+					"LS_SQL_DB_properties_typeProperties_database": {
+						"value": "[parameters('LS_SQL_DB_properties_typeProperties_database')]"
+					},
+					"LS_SQL_DB_properties_typeProperties_userName": {
+						"value": "[parameters('LS_SQL_DB_properties_typeProperties_userName')]"
+					},
+					"ls_metadata_properties_typeProperties_url": {
+						"value": "[parameters('ls_metadata_properties_typeProperties_url')]"
+					},
+					"ls_sql_source_properties_typeProperties_server": {
+						"value": "[parameters('ls_sql_source_properties_typeProperties_server')]"
+					},
+					"ls_sql_source_properties_typeProperties_database": {
+						"value": "[parameters('ls_sql_source_properties_typeProperties_database')]"
+					},
+					"ls_sql_source_properties_typeProperties_userName": {
+						"value": "[parameters('ls_sql_source_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "VulcanTrainingADFTestDemo_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'VulcanTrainingADFTestDemo_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "VulcanTrainingADFTestDemo_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'VulcanTrainingADFTestDemo_ArmTemplate_1')]"
+			]
+		},
+		{
+			"name": "VulcanTrainingADFTestDemo_ArmTemplate_3",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'VulcanTrainingADFTestDemo_ArmTemplate_2')]"
+			]
+		}
+	]
+}
